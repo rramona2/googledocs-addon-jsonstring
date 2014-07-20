@@ -32,7 +32,7 @@
  *   http://www.json.org/
  *
  * @license The Unlicense http://unlicense.org/
- * @version 0.1
+ * @version 0.2
  * @updated 2014-07-20
  * @author  The Pffy Authors https://github.com/pffy/
  * @link    https://github.com/pffy/googledocs-addon-jsonstring
@@ -50,7 +50,7 @@ function getSidebarTitle() {
 }
 
 function getExportFilename() {
-  return 'NewJsonString.js';
+  return 'NewJsonString.json';
 }
 
 // converts range to json
@@ -125,7 +125,7 @@ function getAboutInfo() {
   var str = '';
 
   str += getProductName();
-  str += '\nVersion 0.1';
+  str += '\nVersion 0.2';
 
   str += '\n\nThis is free, libre and open source software.';
   str += '\nhttp://unlicense.org/';
