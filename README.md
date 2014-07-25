@@ -1,5 +1,5 @@
-googledocs-addon-htmltable
-==========================
+### `googledocs-addon-jsonstring`
+
 
 # JSON STRING MAKER
   + [Google Spreadsheets](http://www.google.com/sheets/about/) Add-On.
