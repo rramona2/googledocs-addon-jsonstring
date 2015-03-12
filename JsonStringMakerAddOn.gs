@@ -32,8 +32,8 @@
  *   http://www.json.org/
  *
  * @license The Unlicense http://unlicense.org/
- * @version 0.2
- * @updated 2014-07-20
+ * @version 0.3
+ * @updated 2015-03-12
  * @author  The Pffy Authors https://github.com/pffy/
  * @link    https://github.com/pffy/googledocs-addon-jsonstring
  *
