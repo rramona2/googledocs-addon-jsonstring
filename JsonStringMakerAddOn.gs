@@ -32,120 +32,157 @@
  *   http://www.json.org/
  *
  * @license The Unlicense http://unlicense.org/
- * @version 0.3
+ * @version 0.8
  * @updated 2015-03-12
  * @author  The Pffy Authors https://github.com/pffy/
  * @link    https://github.com/pffy/googledocs-addon-jsonstring
  *
  */
-
-// get product name
-function getProductName() {
-  return 'JsonStringMaker';
+var product = {
+  
+  "name": "JsonStringMaker Add-On",
+  "version": "0.8",
+  
+  "license": "This is free, libre and open source software.",
+  "licenseUrl": "http://unlicense.org/",
+  
+  "author": "The Pffy Authors",
+  "authorUrl": "https://github.com/pffy",
+  
+  "sidebarTitle": "Selected JSON String",
+  "sidebarFilename": "JsonStringPreview",
+ 
+  "exportJsonFilename": "NewJsonString.json", 
+  
+  "tagline": "Live long and prosper."
+  
 }
 
-// get product title
-function getSidebarTitle() {
-  return 'Selected JSON String';
+var menuItems = {
+ 
+  "about": "About " + product.name,
+  "help": product.name + " Help Guide",
+  
+  "convert": "Convert range to JSON array string ...",
+  "save": "Save range as JSON array in file ..."
+  
 }
 
-function getExportFilename() {
-  return 'NewJsonString.json';
+var messages = {
+  
+  "saved": "saved to Google Drive.",
+  "done": "task completed."
+  
 }
+
+var tips = {
+ 
+  "selectTip": "\n\nSELECT spreadsheet rows and columns of cells to create a range.",
+  "convertTip": "\n\nCONVERT that range to a JSON string to be copied and pasted.",
+  
+  "saveJsonTip": "\n-OR-\nSAVE it as " + product.exportJsonFilename 
+    + " on Google Drive."  
+  
+}
+
+
+/**
+ * Add-On UI/Menus
+ **/
+
 
 // converts range to json
-function convertJson() {
+function _convertJson() {
   var range = SpreadsheetApp.getActiveSheet().getActiveRange();
   return '' + new JsonStringMaker(range);
 }
 
 // saves range as JSON to new Google Drive document with JSON file extension
-function saveAsJson(filename) {
+function _saveAsJson(filename) {
 
   var range = SpreadsheetApp.getActiveSheet().getActiveRange();
   var mtm = new JsonStringMaker(range);
 
   DriveApp.createFile(filename, '' + mtm, MimeType.PLAIN_TEXT);
   SpreadsheetApp.getUi()
-     .alert(filename + ' saved to Google Drive.');
+     .alert(filename + ' ' + messages.saved);
 }
 
 // handles convert menu item
-function convertItem() {
+function _convertItem() {
 
   var ui, jsonString;
 
   ui = HtmlService
-  .createHtmlOutputFromFile('JsonStringPreview')
-  .setTitle(getSidebarTitle());
+  .createHtmlOutputFromFile(product.sidebarFilename)
+  .setTitle(product.sidebarTitle);
 
-  jsonString = convertJson();
+  jsonString = _convertJson();
   ui.append('<br/>Copy and Paste this:<br/><textarea>' + jsonString + '</textarea>');
 
   SpreadsheetApp.getUi().showSidebar(ui);
 }
 
 // handles save menu item
-function saveItem() {
-  saveAsJson(getExportFilename());
+function _saveItem() {
+  _saveAsJson(product.exportJsonFilename);
 }
 
 // handles help menu item
-function helpItem() {
+function _helpItem() {
   SpreadsheetApp.getUi()
-     .alert(getHelpInfo());
+     .alert(_getHelpInfo());
 }
 
 // handles about menu item
-function aboutItem() {
+function _aboutItem() {
   SpreadsheetApp.getUi()
-     .alert(getAboutInfo());
+     .alert(_getAboutInfo());
 }
 
 // returns Help information
-function getHelpInfo() {
+function _getHelpInfo() {
 
   var str = '';
-
-  str += 'HELP GUIDE';
-  str += '\n\nSELECT spreadsheet rows and columns of cells to create a range.';
-  str += '\n\nCONVERT that range to JSON to be copied and pasted.';
-  str += '\n-OR-\nSAVE it as ' + getExportFilename()
-    + ' on Google Drive, to edit with Drive apps.';
-
-  str += '\n\nLive long and prosper.';
-  str += '\n --The Pffy Authors';
+  str += menuItems.help;
+  
+  str += tips.selectTip;
+  str += tips.convertTip;
+  str += tips.saveJsonTip;
+  
+  str += '\n\n' + product.tagline;
+  str += '\n --' + product.author;
 
   return str;
 }
 
 // returns About information: product, license and authors
-function getAboutInfo() {
+function _getAboutInfo() {
 
   var str = '';
+  
+  str += product.name;
+  str += '\nVersion ' + product.version;
 
-  str += getProductName();
-  str += '\nVersion 0.2';
+  str += '\n\n' + product.license;
+  str += '\n' + product.licenseUrl;
 
-  str += '\n\nThis is free, libre and open source software.';
-  str += '\nhttp://unlicense.org/';
-
-  str += '\n\nThe Pffy Authors';
-  str += '\nhttps://github.com/pffy';
-
+  str += '\n\n' + product.author;
+  str += '\n' + product.authorUrl;
+  
   return str;
 }
 
 // adds menus to Google Drive Spreadsheets
 function onOpen() {
   var ui = SpreadsheetApp.getUi();
-  ui.createMenu(getProductName())
-      .addItem('Convert range to JSON array string ...', 'convertItem')
-      .addItem('Save range as JSON array in file ...', 'saveItem')
+  ui.createMenu(product.name)
+      .addItem(menuItems.convert, '_convertItem')
+      .addItem(menuItems.save, '_saveItem')
       .addSeparator()
-      .addItem('Help Guide', 'helpItem')
+      .addItem(menuItems.help, '_helpItem')
       .addSeparator()
-      .addItem('About ' + getProductName(), 'aboutItem')
+      .addItem(menuItems.about, '_aboutItem')
       .addToUi();
 }
 
